@@ -16,6 +16,7 @@ public class FakeRope : MonoBehaviour {
     [Range(0.001f,10)] public float f = 1f;
     [Range(0,5)]public float z = 1f;
     [Range(-6,6)]public float r = 1f;
+    public SecondOrderDynamics secondOrderDynamics;
     
     
     //config
@@ -26,7 +27,6 @@ public class FakeRope : MonoBehaviour {
     public LineRenderer lr;
 
     //private state
-    [HideInInspector] public SecondOrderDynamics secondOrderDynamics;
     [HideInInspector] public Vector3 dynamicmiMiddlePosition;
     private Vector3 targetLastFrame;
     private void Start() {

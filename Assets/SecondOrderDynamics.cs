@@ -12,6 +12,10 @@ public class SecondOrderDynamics {
     private Vector3 xp; // previous input
     private Vector3 y, yd; //state variables
     private float _w, _z, _d, k1, k2, k3;
+
+
+    public float F, Z, R;
+    
     
     public SecondOrderDynamics(float f, float z, float r, Vector3 x0) {
         //compute constants
