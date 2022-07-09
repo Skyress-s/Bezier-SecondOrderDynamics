@@ -7,6 +7,36 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
 
+/*
+    USAGE:
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            
+            ImprovedEditorGraph graph = new ImprovedEditorGraph(0f, -1, 1f, 1f, "RopeBehaviourViz");
+			graph.AddLine(results);		// results is a List<Vector3> where x and y are mapped to the grapf
+			graph.Draw(50, 300); // draws
+
+        }
+    
+    MORE COMPLICATED USAGE:
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            ImprovedEditorGraph graph = new ImprovedEditorGraph(0f, -1, 1f, 1f, "RopeBehaviourViz");
+
+            // Edit some colors...
+            graph.Colors.Background = new Color(0.2f, 0.2f, 0.2f, 1f);
+            
+            //add more lines
+            graph.AddLine(results1);
+            graph.AddLine(results2);
+            ...
+            
+            graph.Draw();
+        }
+*/
 public class ImprovedEditorGraph {
     #region publicState
 

@@ -73,7 +73,7 @@ public class FakeRopeEditor : Editor
         Gizmos.DrawSphere(fakeRope.t3.position, 0.1f);
 
 
-        int segments = 10;
+        int segments = 11;
         List<Vector3> linePositions = new List<Vector3>();
         for (int i = 0; i < segments; i++) {
             linePositions.Add(Bezier.PointQuadratic(fakeRope.t1.position, fakeRope.GetMiddlePosition(), fakeRope.t3.position,
