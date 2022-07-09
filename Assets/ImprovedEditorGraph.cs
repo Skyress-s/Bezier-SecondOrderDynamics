@@ -5,14 +5,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class ImprovedEditorGraph {
     #region publicState
 
     public string Title = "";
     public GraphColors Colors;
-    public float yAxis = 1f;
-    public float xAxis = 1f;
+    public float xAxisLines = 1f;
+    public float yAxisLines = 1f;
 
     #endregion
 
@@ -20,10 +21,10 @@ public class ImprovedEditorGraph {
 
     float minX, maxX, minY, maxY;
     Rect rect;
-    float rangeX = 10;
-    float rangeY = 10;
+    float rangeX { get { return maxX - minX; } }
+    private float rangeY { get { return maxY - minY; } }
 
-    private List<List<Vector3>> lines = new List<List<Vector3>>(); 
+    private List<List<Vector3>> lines = new List<List<Vector3>>();
 
     #endregion
 
@@ -32,7 +33,7 @@ public class ImprovedEditorGraph {
     /// </summary>
     /// <param name="_minX">Minimum X value in graph units.</param>
     /// <param name="_minY">Minimum Y value in graph units.</param>
-    /// <param name="_maxX">Maximum X value in graph units.</param>
+    /// <param name="_maxX">Minimum X value in graph units.</param>
     /// <param name="_maxY">Maximum Y value in graph units.</param>
     /// <param name="_title">Title of the graph (optional).</param>
     /// <param name="_title">Resolution of the graphs (how many points are evaluated for each custom function).</param>
@@ -46,9 +47,6 @@ public class ImprovedEditorGraph {
         maxX = _maxX;
         minY = _minY;
         maxY = _maxY;
-
-        rangeX = maxX - minX;
-        rangeY = maxY - minY;
 
         Title = _title;
 
@@ -117,22 +115,129 @@ public class ImprovedEditorGraph {
         }
 
         //eventual click logic here
-        
+
         // Only continue if we're repainting the graph
         if (Event.current.type != EventType.Repaint)
             return;
 
         Handles.DrawSolidRectangleWithOutline(rect, Colors.Background, Colors.Outline);
-        
+
         //eventual helper lines x and y
 
+        
+
+
+        //draws lines
+        //------------------------------------------------
+
+        //helper func
+        float[] AxisArray(List<Vector3> list, Axis axis) {
+            float[] returnValue = new float[list.Count];
+            switch (axis) {
+                case Axis.X:
+                    for (int i = 0; i < list.Count; i++) {
+                        returnValue[i] = list[i].x;
+                    }
+
+                    break;
+                case Axis.Y:
+                    for (int i = 0; i < list.Count; i++) {
+                        returnValue[i] = list[i].y;
+                    }
+
+                    break;
+                case Axis.Z:
+                    for (int i = 0; i < list.Count; i++) {
+                        returnValue[i] = list[i].z;
+                    }
+
+                    break;
+                default:
+                    for (int i = 0; i < list.Count; i++) {
+                        returnValue[i] = list[i].y;
+                    }
+
+                    break;
+            }
+
+            // foreach (var varr in returnValue) {
+            //     Debug.Log(varr);
+            //     
+            // }
+            return returnValue;
+        }
+
+        //finds min max values so entire graph is shown 
+        foreach (var line in lines) {
+            minX = Mathf.Min(minX, Mathf.Min(AxisArray(line, Axis.X)));
+            maxX = Mathf.Max(maxX, Mathf.Max(AxisArray(line, Axis.X)));
+            minY = Mathf.Min(minY, Mathf.Min(AxisArray(line, Axis.Y)));
+            maxY = Mathf.Max(maxY, Mathf.Max(AxisArray(line, Axis.Y)));
+        }
+
+
+        foreach (var line in lines) {
+            DrawLine(line, Colors.CustomLine);
+        }
+        
+        
+        
         List<Vector3> points = new List<Vector3>(2);
         points.Add(Vector3.zero);
         points.Add(Vector3.zero);
+
+
+        //implements axis and grid
+        //------------------------------------------------
+        
+         //x axis lines
+         //positive
+         for (float i = 0; i < maxY; i++) {
+             points[0] = new Vector3( minX, i);
+             points[1] = new Vector3(maxX, i);
+             DrawLine(points, Colors.GridLine);
+             
+             GUI.Label(new Rect(PointToGraph(new Vector3(minX, i)), Vector2.one * 24), i.ToString());
+         }
+
+         
+         //minus
+         for (float i = -1; i > minY; i--) {
+             points[0] = new Vector3( minX, i);
+             points[1] = new Vector3(maxX, i);
+             DrawLine(points, Colors.GridLine);
+             
+             GUI.Label(new Rect(PointToGraph(new Vector3(minX, i)), Vector2.one * 24), i.ToString());
+         }
         
         
-        //implements axis
+        //y axis lines
+        //positive
+        for (float i = 0; i < maxX; i++) {
+            points[0] = new Vector3( i, minY);
+            points[1] = new Vector3(i, maxY);
+            DrawLine(points, Colors.GridLine);
+            
+            GUI.Label(new Rect(PointToGraph(new Vector3(i, maxY)), Vector2.one * 24), i.ToString());
+        }
+
+        
+        //minus
+        for (float i = -1; i > minX; i--) {
+            points[0] = new Vector3( i, minY);
+            points[1] = new Vector3(i, maxY);
+            DrawLine(points, Colors.GridLine);
+            
+            GUI.Label(new Rect(PointToGraph(new Vector3(i, maxY)) , Vector2.one * 24), i.ToString());
+        }
+        
+        
+        
+        
+        
+        
     }
+
 
     public void AddLine(List<Vector3> _points) {
         lines.Add(_points);
@@ -149,8 +254,10 @@ public class ImprovedEditorGraph {
     }
 
     private Vector3 PointToGraph(Vector3 _point) {
-        _point.x = Mathf.Lerp(rect.xMin, rect.xMax, (_point.x - minX) / (rangeX)); // the t in this case is the basic lerp function solved for t
-        _point.y = Mathf.Lerp(rect.yMax, rect.yMin, (_point.y - minY) / (rangeY)); // --||-- exept we invert the points so its right side up
+        _point.x = Mathf.Lerp(rect.xMin, rect.xMax,
+            (_point.x - minX) / (rangeX)); // the t in this case is the basic lerp function solved for t
+        _point.y = Mathf.Lerp(rect.yMax, rect.yMin,
+            (_point.y - minY) / (rangeY)); // --||-- exept we invert the points so its right side up
         return new Vector3(_point.x, _point.y, 0f);
     }
 }

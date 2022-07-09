@@ -11,7 +11,7 @@ public class FakeRopeEditor : Editor
     public override void OnInspectorGUI() {
         DrawDefaultInspector();
         int steps = 150;
-        float time = 2f;
+        float time = 5f;
         float timeStep = time / steps;
         Vector3 targetPos = Vector3.up;
         Vector3 startPos = Vector3.zero;
@@ -26,11 +26,12 @@ public class FakeRopeEditor : Editor
             float distance = point.y;
             results.Add(new Vector3(i * timeStep, distance, 0f));
         }
-
-        float minn = -10;
-        ImprovedEditorGraph graph = new ImprovedEditorGraph(0f, -1, 2, 3, "Herro");
+        
+        ImprovedEditorGraph graph = new ImprovedEditorGraph(0f, -1, 1f, 1f, "RopeBehaviourViz");
+        graph.AddLine(results);
         graph.Draw(50, 300);
-        graph.DrawLine(results, Color.red);
+
+
         
         
         //creating own graph
@@ -44,27 +45,32 @@ public class FakeRopeEditor : Editor
     [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NonSelected)]
     static void DrawGizmosSelected(FakeRope fakeRope, GizmoType gizmoType)
     {
+        
+        
+        
         if (fakeRope.t1 == null  || fakeRope.t3 == null) 
             return;
-        Vector3 middlePos = fakeRope.GetMiddlePosition();    
+        Vector3 targetPosition = fakeRope.GetMiddlePosition();
+        Vector3 dynamicPosition = fakeRope.dynamicmiMiddlePosition;
+        if (!Application.isPlaying)
+            dynamicPosition = targetPosition;
         
-        Gizmos.color = Color.cyan;
-        Vector3 targetPosition = Bezier.PointQuadratic(fakeRope.t1.position, middlePos,
-            fakeRope.t3.position, fakeRope.t);
-        Gizmos.DrawSphere(targetPosition, 0.2f);
+        //draw middle spheres
         Gizmos.color = Color.red;
-        Vector3 dynamicPosition =Bezier.PointQuadratic(fakeRope.t1.position, fakeRope.middlePosition, fakeRope.t3.position, 0.5f);
-        Gizmos.DrawSphere(dynamicPosition, 0.2f);
+        Gizmos.DrawSphere(targetPosition, 0.1f);
+        Gizmos.color = Color.gray;
+        Gizmos.DrawSphere(dynamicPosition, 0.05f);
         
-        Handles.color = Color.green;
-        Handles.DrawPolyLine(targetPosition, dynamicPosition);
+        //draw lines
         Handles.color = Color.red;
-        Handles.DrawPolyLine(targetPosition, middlePos);
+        Handles.DrawPolyLine(targetPosition, Bezier.PointLinear(fakeRope.t1.position, fakeRope.t3.position, 0.5f));
+        Handles.color = Color.gray;
+        Handles.DrawPolyLine(targetPosition, dynamicPosition);
         
+        //draw handles
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(fakeRope.t1.position, 0.1f);
-        Gizmos.DrawSphere(fakeRope.GetMiddlePosition(), 0.2f);
-        Gizmos.DrawSphere(fakeRope.t3.position, 0.3f);
+        Gizmos.DrawSphere(fakeRope.t3.position, 0.1f);
 
 
         int segments = 10;
