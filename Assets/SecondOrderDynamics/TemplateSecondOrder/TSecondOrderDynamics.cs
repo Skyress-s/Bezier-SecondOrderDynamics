@@ -6,18 +6,16 @@ using Unity.Mathematics;
 using UnityEngine;
 
 [Serializable]
-public class SecondOrderDynamics {
+public class SecondOrderDynamicsF {
     #region MyRegion
     
-    private Vector3 xp; // previous input
-    private Vector3 y, yd; //state variables
+    private float xp; // previous input
+    private float y, yd; //state variables
     private float _w, _z, _d, k1, k2, k3;
-
 
     public float F, Z, R;
     
-    
-    public SecondOrderDynamics(float f, float z, float r, Vector3 x0) {
+    public SecondOrderDynamicsF(float f, float z, float r, float x0) {
         //compute constants
         _w = 2f * Mathf.PI * f;
         _z = z;
@@ -29,7 +27,7 @@ public class SecondOrderDynamics {
         //init variables
         xp = x0;
         y = x0;
-        yd = Vector3.zero;
+        yd = 0f;
     }
 
     public void UpdateVariables(float f, float z, float r) {
@@ -42,7 +40,7 @@ public class SecondOrderDynamics {
         k3 = r * z / _w;
     }
 
-    public Vector3 Update(float T, Vector3 x, Vector3? xd = null) {
+    public float Update(float T, float x, float? xd = null) {
         if (xd == null) { // estimate target velocity
             xd = (x - xp) / T;
             xp = x;
@@ -64,7 +62,7 @@ public class SecondOrderDynamics {
         }
 
         y = y + T * yd; //integrate position by velocity
-        yd = (Vector3)(yd + T * (x + k3 * xd - y - k1 * yd) / k2_stable);
+        yd = (float)(yd + T * (x + k3 * xd - y - k1 * yd) / k2_stable);
         return y;
     }
     #endregion
