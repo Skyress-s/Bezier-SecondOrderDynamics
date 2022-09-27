@@ -6,6 +6,7 @@
 
 # SecondOrderDynamics and GraphDrawer example
 ![image](https://user-images.githubusercontent.com/62551684/192576411-0105cc69-1d34-4906-affb-ab048898f40e.png)
+![Demo|5](https://user-images.githubusercontent.com/62551684/192579508-d636df7f-e56f-44d2-8019-9d93e0fd4b7a.gif)
 
  # How to install / See example scene
  - download the ziped code and open it as a Unity project. Open scene Assets/Scenes/SampleScene.unity to see examples
