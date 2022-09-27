@@ -15,7 +15,7 @@
 - Package the Assets/SecondOrderDynamics folder and import it to another project to use :)
 ![image](https://user-images.githubusercontent.com/62551684/192576803-7f779328-fc1a-4f14-a019-00c1fc924420.png)
 
-# References / Soruces
+# References / Sources
 - maths of secondOrderDynamics is heavaly based on the wonderful procedual animations youtube video by T3ssel8r https://www.youtube.com/watch?v=KPoeNZZ6H4s
 - SpecialAbility related script examples are taken from https://nosuchstudio.medium.com/learn-unity-editor-scripting-property-drawers-part-2-6fe6097f1586
 - ImprovedEditorGraph is based on https://gist.github.com/thelastpointer/c52c4b1f147dc47961798e39e3a7ea10#comments
@@ -24,3 +24,4 @@
 - Make a templated version if possible
 - Make verion that supports Quaternions
 - Give ImprovedEditorGraph a better name and support mulitple graphs in same view
+- Easier Color variation to graph
