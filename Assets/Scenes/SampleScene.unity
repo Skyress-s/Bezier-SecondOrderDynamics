@@ -362,9 +362,9 @@ MonoBehaviour:
   t1: {fileID: 644131260}
   t2: {fileID: 412267519}
   t3: {fileID: 1260876231}
-  f: 1
-  z: 1
-  r: 1
+  f: 7.06
+  z: 0.443
+  r: -2.89
   secondOrderDynamics:
     F: 0.41
     Z: -0.21
@@ -872,8 +872,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee498114fac5f82409d4e9a48eaa91d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  specialAbility:
-    type: 0
+  fooBefore: 0.21
+  secondOrderDynamics:
+    F: 0.75
+    Z: 0.27
+    R: -10
+  fooAFter: 0
 --- !u!4 &1147792225
 Transform:
   m_ObjectHideFlags: 0

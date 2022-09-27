@@ -90,6 +90,115 @@ public class ImprovedEditorGraph {
         };
     }
 
+    public ImprovedEditorGraph(Rect rect/*, float minX, float maxX, float minY, float maxY*/)
+    {
+
+        this.rect = rect;
+        
+        Colors = new GraphColors {
+            Background = new Color(0.15f, 0.15f, 0.15f, 1f),
+            Outline = new Color(0.15f, 0.15f, 0.15f, 1f),
+            GridLine = new Color(0.5f, 0.5f, 0.5f),
+            Function = Color.red,
+            CustomLine = Color.white
+        };
+        // if (minX >= maxX)
+        //     throw new System.ArgumentException("Editor graph: minimum X value must be greater than maximum!", "_minX");
+        // if (minY >= maxY)
+        //     throw new System.ArgumentException("Editor graph: minimum Y value must be greater than maximum!", "_minY");
+        //
+        // this.minX = minX;
+        // this.maxX = maxX;
+        // this.minY = minY;
+        // this.maxY = maxY;
+    }
+
+    public void DrawNew(in List<Vector3> points)
+    {
+        if (Event.current.type != EventType.Repaint)
+            return;
+        
+        SetGraphBounds(in points, out minX, out maxX, out minY, out maxY);
+        
+        EditorGUI.DrawRect(rect, new Color(0.2f, 0.2f, 0.2f));
+        DrawLine(points, Color.red);
+        
+        DrawAxisLines();
+        
+    }
+    
+    void SetGraphBounds(in List<Vector3> points, out float minX, out float maxX, out float minY, out float maxY)
+    {
+        minX = minY = Single.PositiveInfinity;
+        maxX = maxY = Single.NegativeInfinity;
+        foreach (var point in points)
+        {
+            // x axis
+            if (point.x < minX)
+                minX = point.x;
+            if (point.x > maxX)
+                maxX = point.x;
+            
+            // y axis
+            if (point.y < minY)
+                minY = point.y;
+            if (point.y > maxY)
+                maxY = point.y;
+        }
+    }
+
+    void DrawAxisLines()
+    {
+        List<Vector3> axisPoints = new List<Vector3>(2);
+        axisPoints.Add(Vector3.zero);
+        axisPoints.Add(Vector3.zero);
+
+
+        //implements axis and grid
+        //------------------------------------------------
+        
+        //x axis lines
+        //positive
+        for (float i = 0; i < maxY; i++) {
+            axisPoints[0] = new Vector3( minX, i);
+            axisPoints[1] = new Vector3(maxX, i);
+            DrawLine(axisPoints, Colors.GridLine);
+             
+            GUI.Label(new Rect(PointToGraph(new Vector3(minX, i)), Vector2.one * 24), i.ToString());
+        }
+
+         
+        //minus
+        for (float i = -1; i > minY; i--) {
+            axisPoints[0] = new Vector3( minX, i);
+            axisPoints[1] = new Vector3(maxX, i);
+            DrawLine(axisPoints, Colors.GridLine);
+             
+            GUI.Label(new Rect(PointToGraph(new Vector3(minX, i)), Vector2.one * 24), i.ToString());
+        }
+        
+        
+        //y axis lines
+        //positive
+        for (float i = 0; i < maxX; i++) {
+            axisPoints[0] = new Vector3( i, minY);
+            axisPoints[1] = new Vector3(i, maxY);
+            DrawLine(axisPoints, Colors.GridLine);
+            
+            GUI.Label(new Rect(PointToGraph(new Vector3(i, maxY)), Vector2.one * 24), i.ToString());
+        }
+
+        
+        //minus
+        for (float i = -1; i > minX; i--) {
+            axisPoints[0] = new Vector3( i, minY);
+            axisPoints[1] = new Vector3(i, maxY);
+            DrawLine(axisPoints, Colors.GridLine);
+            
+            GUI.Label(new Rect(PointToGraph(new Vector3(i, maxY)) , Vector2.one * 24), i.ToString());
+        }
+    }
+    
     /// <summary>
     /// Colors used to draw the graph.
     /// </summary>
@@ -218,25 +327,25 @@ public class ImprovedEditorGraph {
         //implements axis and grid
         //------------------------------------------------
         
-         //x axis lines
-         //positive
-         for (float i = 0; i < maxY; i++) {
-             points[0] = new Vector3( minX, i);
-             points[1] = new Vector3(maxX, i);
-             DrawLine(points, Colors.GridLine);
+        //x axis lines
+        //positive
+        for (float i = 0; i < maxY; i++) {
+            points[0] = new Vector3( minX, i);
+            points[1] = new Vector3(maxX, i);
+            DrawLine(points, Colors.GridLine);
              
-             GUI.Label(new Rect(PointToGraph(new Vector3(minX, i)), Vector2.one * 24), i.ToString());
-         }
+            GUI.Label(new Rect(PointToGraph(new Vector3(minX, i)), Vector2.one * 24), i.ToString());
+        }
 
          
-         //minus
-         for (float i = -1; i > minY; i--) {
-             points[0] = new Vector3( minX, i);
-             points[1] = new Vector3(maxX, i);
-             DrawLine(points, Colors.GridLine);
+        //minus
+        for (float i = -1; i > minY; i--) {
+            points[0] = new Vector3( minX, i);
+            points[1] = new Vector3(maxX, i);
+            DrawLine(points, Colors.GridLine);
              
-             GUI.Label(new Rect(PointToGraph(new Vector3(minX, i)), Vector2.one * 24), i.ToString());
-         }
+            GUI.Label(new Rect(PointToGraph(new Vector3(minX, i)), Vector2.one * 24), i.ToString());
+        }
         
         
         //y axis lines
@@ -288,4 +397,8 @@ public class ImprovedEditorGraph {
             (_point.y - minY) / (rangeY)); // --||-- exept we invert the points so its right side up
         return new Vector3(_point.x, _point.y, 0f);
     }
+    
+    
+    // static
+    
 }

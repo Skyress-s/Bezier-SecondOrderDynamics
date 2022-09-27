@@ -14,7 +14,7 @@ public class SecondOrderDynamicsEditor : PropertyDrawer
     
     
     // rect related
-    private int expanedHeightMod = 10;
+    private int expanedHeightMod = 15;
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         // base.OnGUI(position, property, label);
         float singleLineHeight = EditorGUIUtility.singleLineHeight;
@@ -56,12 +56,13 @@ public class SecondOrderDynamicsEditor : PropertyDrawer
 
             Rect graphRect = new Rect(position.min.x, position.min.y + lines++ * singleLineHeight, position.size.x,
                 singleLineHeight * (expanedHeightMod - lines));
-            
-            EditorGUI.DrawRect(graphRect, new Color(0.2f, 0.2f, 0.2f));
-            DrawLine(graphRect, points, Color.red);
-            
-            
-            
+            //
+            // EditorGUI.DrawRect(graphRect, new Color(0.2f, 0.2f, 0.2f));
+            // DrawLine(graphRect, points, Color.red);
+
+            ImprovedEditorGraph graph = new ImprovedEditorGraph(graphRect);
+            graph.DrawNew(points);
+
         }
         
          
