@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 
-[CustomPropertyDrawer(typeof(SecondOrderDynamics))]
-public class SecondOrderDynamicsEditor : PropertyDrawer 
+[CustomPropertyDrawer(typeof(SecondOrderDynamicsF))]
+public class SecondOrderDynamicsFEditor : PropertyDrawer 
 {
     float minX, maxX, minY, maxY;
     float rangeX { get { return maxX - minX; } }
@@ -61,50 +61,22 @@ public class SecondOrderDynamicsEditor : PropertyDrawer
 
         }
         
-         
-        
-        /*EditorGUI.indentLevel = 0;
-        int indent = EditorGUI.indentLevel;
-        
-        // some magic
-        SerializedProperty minProp = property.FindPropertyRelative("F");
-        SerializedProperty mirrirProp = property.FindPropertyRelative("Z");
-        SerializedProperty maxProp = property.FindPropertyRelative("R");
-        
-        //draw!
-        float f, z, r;
-        f = property.FindPropertyRelative("F").floatValue;
-        z = property.FindPropertyRelative("Z").floatValue;
-        r = property.FindPropertyRelative("R").floatValue;
-        
-        Debug.Log($"F {f} - Z {z} - R {r}");
-        
-        f = 7f;
-        
-        Vector3 startPos = Vector3.zero;
-        SecondOrderDynamics secondOrderDynamics = new SecondOrderDynamics(f, z, r, startPos);
-        DrawGraph(secondOrderDynamics);
-        Debug.Log("test");
-        
-        EditorGUI.indentLevel = indent;*/
-        
         EditorGUI.EndProperty();
     }
 
     List<Vector3> GetSecondOrderDynamicsPoints(float f, float z, float r)
     {
-        SecondOrderDynamics secondOrderDynamics = new SecondOrderDynamics(f, z, r);
-        secondOrderDynamics.Init(Vector3.zero);
+        SecondOrderDynamicsF secondOrderDynamics = new SecondOrderDynamicsF(f, z, r, 0f);
         int steps = 150;
         float time = 5f;
         float timeStep = time / steps;
-        Vector3 targetPos = Vector3.up;
+        float targetPos = 1;
         
         List<Vector3> results = new List<Vector3>();
         for (int i = 0; i < steps; i++) {
-            Vector3 point = secondOrderDynamics.Update(timeStep, targetPos);
+            float point = secondOrderDynamics.Update(timeStep, targetPos);
             // float distance = Vector3.Distance(targetPos, point);
-            float distance = point.y;
+            float distance = point;
             results.Add(new Vector3(i * timeStep, distance, 0f));
         }
 

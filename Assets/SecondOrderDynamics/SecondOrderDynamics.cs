@@ -15,31 +15,56 @@ public class SecondOrderDynamics {
 
     public float F, Z, R;
     
-    public SecondOrderDynamics(float f, float z, float r, Vector3 x0) {
-        //compute constants
-        _w = 2f * Mathf.PI * f;
-        _z = z;
-        _d = _w * Mathf.Sqrt(Mathf.Abs(z * z - 1));
-        k1 = z / (Mathf.PI * f);
-        k2 = 1f / (_w * _w);
-        k3 = r * z / _w;
-        
-        //init variables
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="f"></param>
+    /// <param name="z"></param>
+    /// <param name="r"></param>
+    /// <param name="x0">Start position</param>
+    public SecondOrderDynamics(float f, float z, float r)
+    {
+        F = f;
+        Z = z;
+        R = r;
+    }
+
+    // use in start befire game starts
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x0">start position</param>
+    public void Init(Vector3 x0)
+    {
+        UpdateVariables(); 
         xp = x0;
         y = x0;
         yd = Vector3.zero;
     }
-
-    public void UpdateVariables(float f, float z, float r) {
+    
+    public void UpdateVariables() {
+        // //compute constants
+        // _w = 2f * Mathf.PI * f;
+        // _z = z;
+        // _d = _w * Mathf.Sqrt(Mathf.Abs(z * z - 1));
+        // k1 = z / (Mathf.PI * f);
+        // k2 = 1f / (_w * _w);
         //compute constants
-        _w = 2f * Mathf.PI * f;
-        _z = z;
-        _d = _w * Mathf.Sqrt(Mathf.Abs(z * z - 1));
-        k1 = z / (Mathf.PI * f);
+        _w = 2f * Mathf.PI * F;
+        _z = Z;
+        _d = _w * Mathf.Sqrt(Mathf.Abs(Z * Z - 1));
+        k1 = Z / (Mathf.PI * F);
         k2 = 1f / (_w * _w);
-        k3 = r * z / _w;
+        k3 = R * Z / _w;       // k3 = r * z / _w;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="T"></param>
+    /// <param name="x">target postion</param>
+    /// <param name="xd">target velocity</param>
+    /// <returns></returns>
     public Vector3 Update(float T, Vector3 x, Vector3? xd = null) {
         if (xd == null) { // estimate target velocity
             xd = (x - xp) / T;

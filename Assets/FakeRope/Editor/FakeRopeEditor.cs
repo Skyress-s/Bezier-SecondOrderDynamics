@@ -17,7 +17,7 @@ public class FakeRopeEditor : Editor
         Vector3 startPos = Vector3.zero;
         
         FakeRope fakeRope = (FakeRope)target;
-        SecondOrderDynamics secondOrderDynamics = new SecondOrderDynamics(fakeRope.f, fakeRope.z, fakeRope.r, startPos);
+        SecondOrderDynamics secondOrderDynamics = new SecondOrderDynamics(fakeRope.f, fakeRope.z, fakeRope.r);
 
         List<Vector3> results = new List<Vector3>();
         for (int i = 0; i < steps; i++) {
