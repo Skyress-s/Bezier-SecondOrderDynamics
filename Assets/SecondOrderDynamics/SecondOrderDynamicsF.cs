@@ -1,8 +1,5 @@
 //refrence https://www.youtube.com/watch?v=KPoeNZZ6H4s&t=238s
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 [Serializable]

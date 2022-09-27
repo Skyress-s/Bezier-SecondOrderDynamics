@@ -10,26 +10,6 @@ public class FakeRopeEditor : Editor
 {
     public override void OnInspectorGUI() {
         DrawDefaultInspector();
-        int steps = 150;
-        float time = 5f;
-        float timeStep = time / steps;
-        Vector3 targetPos = Vector3.up;
-        Vector3 startPos = Vector3.zero;
-        
-        FakeRope fakeRope = (FakeRope)target;
-        SecondOrderDynamics secondOrderDynamics = new SecondOrderDynamics(fakeRope.f, fakeRope.z, fakeRope.r);
-
-        List<Vector3> results = new List<Vector3>();
-        for (int i = 0; i < steps; i++) {
-            Vector3 point = secondOrderDynamics.Update(timeStep, targetPos);
-            // float distance = Vector3.Distance(targetPos, point);
-            float distance = point.y;
-            results.Add(new Vector3(i * timeStep, distance, 0f));
-        }
-        
-        ImprovedEditorGraph graph = new ImprovedEditorGraph(0f, -1, 1f, 1f, "RopeBehaviourViz");
-        graph.AddLine(results);
-        graph.Draw(50, 300);
 
 
         

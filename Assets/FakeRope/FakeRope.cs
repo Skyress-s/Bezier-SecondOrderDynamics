@@ -13,9 +13,6 @@ public class FakeRope : MonoBehaviour {
     
     
     [Header("SecondOrderDynamics")] 
-    [Range(0.001f,10)] public float f = 1f;
-    [Range(0,5)]public float z = 1f;
-    [Range(-6,6)]public float r = 1f;
     public SecondOrderDynamics secondOrderDynamics;
     
     
@@ -32,19 +29,21 @@ public class FakeRope : MonoBehaviour {
     private void Start() {
         dynamicmiMiddlePosition = GetMiddlePosition();
         targetLastFrame = dynamicmiMiddlePosition;
-        secondOrderDynamics = new SecondOrderDynamics(1.4f, 0.15f, -2.0f);
+        secondOrderDynamics.Init(transform.position);
+        startF = secondOrderDynamics.F;
     }
 
+    private float startF;
     private void Update() {
 
 
         //update the dynamincs
-        float stiffness = f;
+        float stiffness = startF;
         if (targetLength < Vector3.Distance(t1.position, t3.position)) {
             stiffness *= 4f;
         }
-        secondOrderDynamics.UpdateVariables();
 
+        secondOrderDynamics.F = stiffness;
         //velocity
         Vector3? vel = GetMiddlePosition() - targetLastFrame;
         targetLastFrame = GetMiddlePosition();

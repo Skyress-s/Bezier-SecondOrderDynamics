@@ -1,35 +1,58 @@
 //refrence https://www.youtube.com/watch?v=KPoeNZZ6H4s&t=238s
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 [Serializable]
 public class SecondOrderDynamics {
-    #region MyRegion
+    #region properties
+    
+    [SerializeField] private float f, z, r;
     
     private Vector3 xp; // previous input
     private Vector3 y, yd; //state variables
     private float _w, _z, _d, k1, k2, k3;
 
-    public float F, Z, R;
+    #endregion
+
+    #region fields
+
     
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="f"></param>
-    /// <param name="z"></param>
-    /// <param name="r"></param>
-    /// <param name="x0">Start position</param>
+
+    public float F
+    {
+        get { return f; }
+        set {
+            f = value;
+            UpdateVariables(); 
+        }
+    }
+    public float Z
+    {
+        get { return z; }
+        set {
+            z = value;
+            UpdateVariables(); 
+        }
+    }
+    public float R
+    {
+        get { return r; }
+        set {
+            r = value;
+            UpdateVariables(); 
+        }
+    }
+        
+    #endregion
+        
     public SecondOrderDynamics(float f, float z, float r)
     {
-        F = f;
-        Z = z;
-        R = r;
+        this.f = f;
+        this.z = z;
+        this.r = r;
     }
 
-    // use in start befire game starts
+    // use BEFORE for call of Update()
     /// <summary>
     /// 
     /// </summary>
@@ -50,12 +73,12 @@ public class SecondOrderDynamics {
         // k1 = z / (Mathf.PI * f);
         // k2 = 1f / (_w * _w);
         //compute constants
-        _w = 2f * Mathf.PI * F;
-        _z = Z;
-        _d = _w * Mathf.Sqrt(Mathf.Abs(Z * Z - 1));
-        k1 = Z / (Mathf.PI * F);
+        _w = 2f * Mathf.PI * f;
+        _z = z;
+        _d = _w * Mathf.Sqrt(Mathf.Abs(z * z - 1));
+        k1 = z / (Mathf.PI * f);
         k2 = 1f / (_w * _w);
-        k3 = R * Z / _w;       // k3 = r * z / _w;
+        k3 = r * z / _w;       // k3 = r * z / _w;
     }
 
     /// <summary>
@@ -90,7 +113,6 @@ public class SecondOrderDynamics {
         yd = (Vector3)(yd + T * (x + k3 * xd - y - k1 * yd) / k2_stable);
         return y;
     }
-    #endregion
 
 
     

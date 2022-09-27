@@ -6,21 +6,20 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
     public Transform positionFollow;
-    public Transform rotationFollow;
     public SecondOrderDynamics secondOrderDynamicsPos;
     public SecondOrderDynamics secondOrderDynamicsRot;
-    // public float fooAfter;
-    public float fooAFter;
-
-    public SecondOrderDynamicsF SecondOrderDynamicsF;
 
 
     private Vector3 posLast;
-
+    private Vector3 rotLast;
     private void Start()
     {
         posLast = transform.position;
         secondOrderDynamicsPos.Init(positionFollow.position);
+
+        rotLast = transform.eulerAngles;
+        secondOrderDynamicsRot.Init(positionFollow.rotation.eulerAngles);
+
     }
 
     private void Update()
@@ -28,9 +27,11 @@ public class Test : MonoBehaviour
         Vector3 vel = (transform.position - posLast) / Time.deltaTime;
         positionFollow.position = secondOrderDynamicsPos.Update(Time.deltaTime, transform.position);
         posLast = transform.position;
-        secondOrderDynamicsPos.UpdateVariables();
 
-        
+
+        Vector3 rotVel = (transform.eulerAngles - rotLast) / Time.deltaTime;
+        positionFollow.eulerAngles = secondOrderDynamicsRot.Update(Time.deltaTime, transform.eulerAngles);
+        rotLast = positionFollow.eulerAngles;
 
     }
 }

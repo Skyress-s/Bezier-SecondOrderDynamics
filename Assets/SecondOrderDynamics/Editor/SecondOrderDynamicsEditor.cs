@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -29,15 +27,15 @@ public class SecondOrderDynamicsEditor : PropertyDrawer
             
             int lines = 1;
             Rect fRect = new Rect(position.min.x, position.min.y + lines++ * singleLineHeight, position.size.x, singleLineHeight);
-            SerializedProperty fprop = property.FindPropertyRelative("F");
+            SerializedProperty fprop = property.FindPropertyRelative("f");
             EditorGUI.Slider(fRect, fprop, 0f, 10f);
         
             Rect zRect = new Rect(position.min.x, position.min.y + lines++ * singleLineHeight, position.size.x, singleLineHeight);
-            SerializedProperty zprop = property.FindPropertyRelative("Z");
+            SerializedProperty zprop = property.FindPropertyRelative("z");
             EditorGUI.Slider(zRect, zprop, 0f, 10f);
         
             Rect rRect = new Rect(position.min.x, position.min.y + lines++ * singleLineHeight, position.size.x, singleLineHeight);
-            SerializedProperty rprop = property.FindPropertyRelative("R");
+            SerializedProperty rprop = property.FindPropertyRelative("r");
             EditorGUI.Slider(rRect, rprop, -10f, 10f);
         
             // minX = 0f;
@@ -45,10 +43,11 @@ public class SecondOrderDynamicsEditor : PropertyDrawer
             // minY = -10f;
             // maxY = 10f;
             float f, z, r;
-            f = property.FindPropertyRelative("F").floatValue;
-            z = property.FindPropertyRelative("Z").floatValue;
-            r = property.FindPropertyRelative("R").floatValue;
-
+            f = property.FindPropertyRelative("f").floatValue;
+            z = property.FindPropertyRelative("z").floatValue;
+            r = property.FindPropertyRelative("r").floatValue;
+            
+            
 
 
             List<Vector3> points = GetSecondOrderDynamicsPoints(f, z, r);
@@ -58,8 +57,15 @@ public class SecondOrderDynamicsEditor : PropertyDrawer
 
             ImprovedEditorGraph graph = new ImprovedEditorGraph(graphRect);
             graph.DrawNew(points);
-
+                
+            
+            
         }
+
+
+        // ensures its updated when changing GUI
+        SecondOrderDynamics secondOrderDynamics= fieldInfo.GetValue(property.serializedObject.targetObject) as SecondOrderDynamics;
+        secondOrderDynamics.UpdateVariables();
         
          
         
