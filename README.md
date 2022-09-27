@@ -14,6 +14,7 @@
 # To use SecondOrderDynamics in other projects
 - Package the Assets/SecondOrderDynamics folder and import it to another project to use :)
 - (MIT licence) reference to the project
+
 ![image](https://user-images.githubusercontent.com/62551684/192576803-7f779328-fc1a-4f14-a019-00c1fc924420.png)
 
 # References / Sources
