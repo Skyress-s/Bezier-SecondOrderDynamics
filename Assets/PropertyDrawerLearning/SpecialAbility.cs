@@ -6,9 +6,13 @@ using UnityEngine;
 [Serializable]
 public class SpecialAbility
 {
-    public Type type;
-    public enum Type
+    public SpecialAbilityType type;
+    [FloatDurationProperty(FloatDurationUnitsMode.Flexible)]
+    public float duration;
+    public float cooldown;
+    public float power;
+    public enum SpecialAbilityType
     {
-        none, Dash, Bounce
+        None, Dash, Bounce, Invisibility
     }
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
+    public float fooBefore;
     // public SecondOrderDynamics secondOrderDynamics;
-    public SpecialAbility specialAbility;
+    public SecondOrderDynamics secondOrderDynamics;
+    // public float fooAfter;
+    public float fooAFter;
 }

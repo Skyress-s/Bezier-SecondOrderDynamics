@@ -49,8 +49,8 @@ public class ImprovedEditorGraph {
 
     #region internalState
 
-    float minX, maxX, minY, maxY;
     Rect rect;
+    float minX, maxX, minY, maxY;
     float rangeX { get { return maxX - minX; } }
     private float rangeY { get { return maxY - minY; } }
 
@@ -209,8 +209,6 @@ public class ImprovedEditorGraph {
         foreach (var line in lines) {
             DrawLine(line, Colors.CustomLine);
         }
-        
-        
         
         List<Vector3> points = new List<Vector3>(2);
         points.Add(Vector3.zero);
