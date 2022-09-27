@@ -23,3 +23,4 @@
 # Future improvements
 - Make a templated version if possible
 - Make verion that supports Quaternions
+- Give ImprovedEditorGraph a better name and support mulitple graphs in same view
