@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CustomPropertyDrawer(typeof(SecondOrderDynamics))]
-public class SecondOrderDynamicsEditor : PropertyDrawer 
+public class SecondOrderDynamicsPropertyDrawer : PropertyDrawer 
 {
     float minX, maxX, minY, maxY;
     float rangeX { get { return maxX - minX; } }

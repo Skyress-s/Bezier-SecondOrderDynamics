@@ -6,37 +6,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
-
-/*
-    USAGE:
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-            
-            ImprovedEditorGraph graph = new ImprovedEditorGraph(0f, -1, 1f, 1f, "RopeBehaviourViz");
-			graph.AddLine(results);		// results is a List<Vector3> where x and y are mapped to the grapf
-			graph.Draw(50, 300); // draws
-
-        }
-    
-    MORE COMPLICATED USAGE:
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-
-            ImprovedEditorGraph graph = new ImprovedEditorGraph(0f, -1, 1f, 1f, "RopeBehaviourViz");
-
-            // Edit some colors...
-            graph.Colors.Background = new Color(0.2f, 0.2f, 0.2f, 1f);
-            
-            //add more lines
-            graph.AddLine(results1);
-            graph.AddLine(results2);
-            ...
-            
-            graph.Draw();
-        }
-*/
 public class ImprovedEditorGraph {
     #region publicState
 
@@ -58,38 +27,6 @@ public class ImprovedEditorGraph {
 
     #endregion
 
-    /// <summary>
-    /// Constructor.
-    /// </summary>
-    /// <param name="_minX">Minimum X value in graph units.</param>
-    /// <param name="_minY">Minimum Y value in graph units.</param>
-    /// <param name="_maxX">Minimum X value in graph units.</param>
-    /// <param name="_maxY">Maximum Y value in graph units.</param>
-    /// <param name="_title">Title of the graph (optional).</param>
-    /// <param name="_title">Resolution of the graphs (how many points are evaluated for each custom function).</param>
-    public ImprovedEditorGraph(float _minX, float _minY, float _maxX, float _maxY, string _title = "") {
-        if (_minX >= _maxX)
-            throw new System.ArgumentException("Editor graph: minimum X value must be greater than maximum!", "_minX");
-        if (_minY >= _maxY)
-            throw new System.ArgumentException("Editor graph: minimum Y value must be greater than maximum!", "_minY");
-
-        minX = _minX;
-        maxX = _maxX;
-        minY = _minY;
-        maxY = _maxY;
-
-        Title = _title;
-
-        // Default graph colors
-        Colors = new GraphColors {
-            Background = new Color(0.15f, 0.15f, 0.15f, 1f),
-            Outline = new Color(0.15f, 0.15f, 0.15f, 1f),
-            GridLine = new Color(0.5f, 0.5f, 0.5f),
-            Function = Color.red,
-            CustomLine = Color.white
-        };
-    }
-
     public ImprovedEditorGraph(Rect rect/*, float minX, float maxX, float minY, float maxY*/)
     {
 
@@ -102,15 +39,6 @@ public class ImprovedEditorGraph {
             Function = Color.red,
             CustomLine = Color.white
         };
-        // if (minX >= maxX)
-        //     throw new System.ArgumentException("Editor graph: minimum X value must be greater than maximum!", "_minX");
-        // if (minY >= maxY)
-        //     throw new System.ArgumentException("Editor graph: minimum Y value must be greater than maximum!", "_minY");
-        //
-        // this.minX = minX;
-        // this.maxX = maxX;
-        // this.minY = minY;
-        // this.maxY = maxY;
     }
 
     public void DrawNew(in List<Vector3> points)
@@ -228,14 +156,10 @@ public class ImprovedEditorGraph {
         /// </summary>
         public Color CustomLine;
     }
+    
+    // old currently not in use
 
-    /// <summary>
-    /// Draw the graph with the default size (128x80).
-    /// </summary> 
-    public void Draw() {
-        Draw(128f, 200f);
-    }
-
+    /*
     /// <summary>
     /// Draw the graph with the specified minimum size.
     /// </summary>
@@ -374,6 +298,7 @@ public class ImprovedEditorGraph {
         
         
     }
+    */
 
 
     public void AddLine(List<Vector3> _points) {
@@ -397,8 +322,5 @@ public class ImprovedEditorGraph {
             (_point.y - minY) / (rangeY)); // --||-- exept we invert the points so its right side up
         return new Vector3(_point.x, _point.y, 0f);
     }
-    
-    
-    // static
-    
+
 }

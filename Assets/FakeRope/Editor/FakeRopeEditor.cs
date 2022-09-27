@@ -10,15 +10,6 @@ public class FakeRopeEditor : Editor
 {
     public override void OnInspectorGUI() {
         DrawDefaultInspector();
-
-
-        
-        
-        //creating own graph
-        
-
-
-        
     }
     
     
