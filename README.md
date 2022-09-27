@@ -24,7 +24,7 @@
 - ImprovedEditorGraph is based on https://gist.github.com/thelastpointer/c52c4b1f147dc47961798e39e3a7ea10#comments
 
 # Future improvements
-- Make a templated version if possible
-- Make verion that supports Quaternions
+- Make a Generic version if possible
+- Support Quaternions
 - Give ImprovedEditorGraph a better name and support mulitple graphs in same view
 - Easier Color variation to graph
