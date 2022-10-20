@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:Foldout text="Foldout" focusable="false" value="true">
-        <ui:GroupBox>
+        <ui:GroupBox style="height: 61px; width: 262px; position: relative; right: initial;">
+            <ui:Button text="Button" display-tooltip-when-elided="true" style="height: 23px; width: 326px; -unity-text-align: middle-center; white-space: nowrap;" />
             <ui:Button text="Button" display-tooltip-when-elided="true" style="height: 23px; width: 326px; -unity-text-align: middle-center; white-space: nowrap;" />
         </ui:GroupBox>
     </ui:Foldout>

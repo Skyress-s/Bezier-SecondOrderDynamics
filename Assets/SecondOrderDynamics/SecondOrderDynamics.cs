@@ -84,7 +84,7 @@ public class SecondOrderDynamics {
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="T"></param>
+    /// <param name="T">Time</param>
     /// <param name="x">target postion</param>
     /// <param name="xd">target velocity</param>
     /// <returns></returns>
